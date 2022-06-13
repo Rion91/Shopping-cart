@@ -5,47 +5,18 @@
     <div>
       <div v-show="!isLoad" class="container">
         <div class="row">
-          <!--          Todo loop products -->
 
-          <div class="col-md-4">
+          <div class="col-md-4" v-for="p in products" :key="p.id">
             <div class="card p-3 m-3" style="background-color: #d8d8d7">
-              <img src="https://picsum.photos/300/300?random=1">
+
+              <img :src="p.image">
+
               <div class="card-body">
-                <h5 class="card-title">Products Name</h5>
+                <h5 class="card-title">{{ p.name }}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                   card's content.</p>
                 <div class="card-footer">
-                  <span>Price: <small>$100</small></span>
-                  <a @click="addToCart(p)" class="btn btn-dark float-end">Add to cart</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card p-3 m-3" style="background-color: #d8d8d7">
-              <img src="https://picsum.photos/300/300?random=5">
-              <div class="card-body">
-                <h5 class="card-title">Products Name</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                  card's content.</p>
-                <div class="card-footer">
-                  <span>Price: <small>$100</small></span>
-                  <a @click="addToCart(p)" class="btn btn-dark float-end">Add to cart</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card p-3 m-3" style="background-color: #d8d8d7">
-              <img src="https://picsum.photos/300/300?random=6">
-              <div class="card-body">
-                <h5 class="card-title">Products Name</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                  card's content.</p>
-                <div class="card-footer">
-                  <span>Price: <small>$100</small></span>
+                  <span>Price: <small>{{ p.price }}</small></span>
                   <a @click="addToCart(p)" class="btn btn-dark float-end">Add to cart</a>
                 </div>
               </div>
@@ -76,16 +47,26 @@ export default {
   methods: {
     addToCart: function (p) {
       var cart = this.$root.cart;
-      cart.push({...p, qty: 1});
+
+      var isCart = cart.find((c) => {
+        return c.id === p.id;
+      })
+
+      if (isCart) {
+        isCart.qty++
+      } else {
+        cart.push({...p, qty: 1});
+
+      }
+
     }
   },
 
-  // Todo api created
   created() {
-    axios.get(`http://jsonplaceholder.typicode.com/posts`)
+    axios.get(`http://localhost:3000/products`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.posts = response.data;
+          this.products = response.data;
           this.isLoad = false
         })
         .catch(e => {

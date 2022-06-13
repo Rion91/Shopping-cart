@@ -14,26 +14,25 @@
           </tr>
           </thead>
           <tbody>
-<!--          Todo api data pass-->
-          <tr>
-            <!--v-for="(p.i) in cart" :key="i"-->
-            <td>Name</td>
+          <tr v-for="p in cart" :key="p.id">
+
+            <td>{{ p.name }}</td>
             <td>
-              <img src="https://picsum.photos/300/300?random=4" width="10%" alt="">
+              <img :src="p.image" width="20%" alt="" >
             </td>
             <td>
               <span>
-                <button @click="addQty(p)" class="btn btn-success btn-rounded">+</button>
+                <button @click="addQty(p)" id="btn" class="btn btn-success btn-rounded" style="opacity: 50%;">+</button>
               </span><br>
               <span>
-                <button @click="reduceQty(p)" class="btn btn-danger btn-rounded">-</button>
+                <button @click="reduceQty(p)" id="btn" class="btn btn-danger btn-rounded" style="opacity: 50%;">-</button>
               </span>
             </td>
-            <td>2</td>
+            <td>{{ p.qty }}</td>
             <!--{{ p.Qty }}-->
-            <td>$100</td>
+            <td>{{ p.price }}</td>
             <!--{{ p.price }}-->
-            <td>$200</td>
+            <td>{{ p.qty * p.price }}</td>
             <!--{{ qty * price}}-->
           </tr>
           </tbody>
@@ -61,13 +60,18 @@ export default {
   created() {
     this.cart = this.$root.cart;
   },
-  methods:{
-    addQty(p){
+  methods: {
+    addQty(p) {
       p.qty++;
     },
-    reduceQty(p){
+    reduceQty(p) {
       p.qty--;
     }
   }
 }
 </script>
+<style>
+  #btn:hover{
+    opacity: 100% !important;
+  }
+</style>
